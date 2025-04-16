@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request a Quote | Warm Designs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --deep-maroon: #7C444F;
+      --warm-red: #9F5255;
+      --peach: #E16A54;
+      --light-orange: #F39E60;
+      --light-bg: #FFF8F5;
+      --gray: #7a7568;
+      --success: #8a9a5b;
+      --error: #c45656;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--deep-maroon);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(124, 68, 79, 0.1);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(124, 68, 79, 0.1);
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, var(--peach), var(--warm-red));
+    }
+
+    .title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--warm-red);
+      font-weight: 700;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      color: var(--deep-maroon);
+      opacity: 0.8;
+    }
+
+    .quote-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-header h2 {
+      color: var(--deep-maroon);
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .form-header p {
+      color: var(--gray);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 5px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--deep-maroon);
+      font-size: 0.95rem;
+    }
+
+    label.required::after {
+      content: '*';
+      color: var(--error);
+      margin-left: 4px;
+    }
+
+    input, select, textarea {
+      padding: 12px 15px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(124, 68, 79, 0.3);
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--peach);
+      box-shadow: 0 0 0 3px rgba(225, 106, 84, 0.2);
+      background-color: white;
+    }
+
+    textarea {
+      margin-top: 5px;
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .file-upload {
+      text-align: center;
+      margin: 25px 0;
+      border: 2px dashed rgba(124, 68, 79, 0.3);
+      padding: 30px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      background-color: rgba(255, 248, 245, 0.5);
+    }
+
+    .file-upload:hover {
+      border-color: var(--peach);
+      background: rgba(225, 106, 84, 0.1);
+    }
+
+    .file-upload.dragover {
+      border-color: var(--success);
+      background: rgba(138, 154, 91, 0.1);
+    }
+
+    .file-upload i {
+      font-size: 2.5rem;
+      color: var(--peach);
+      margin-bottom: 15px;
+    }
+
+    .file-upload label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: 500;
+      color: var(--gray);
+      cursor: pointer;
+    }
+
+    #fileUpload {
+      display: none;
+    }
+
+    .upload-btn {
+      padding: 10px 25px;
+      background: var(--peach);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .upload-btn:hover {
+      background: var(--warm-red);
+      transform: translateY(-2px);
+    }
+
+    .file-info {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .submit-btn {
+      margin-top: 30px;
+      padding: 15px;
+      background: linear-gradient(to right, var(--peach), var(--warm-red));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      max-width: 250px;
+      margin-left: auto;
+      margin-right: auto;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(159, 82, 85, 0.3);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(159, 82, 85, 0.4);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .form-footer a {
+      color: var(--peach);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .form-footer a:hover {
+      text-decoration: underline;
+      color: var(--warm-red);
+    }
+
+    /* Form validation styles */
+    .error-message {
+      color: var(--error);
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .form-group.error input,
+    .form-group.error select,
+    .form-group.error textarea {
+      border-color: var(--error);
+    }
+
+    .form-group.error .error-message {
+      display: block;
+    }
+
+    /* Success message */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .success-message i {
+      font-size: 4rem;
+      color: var(--success);
+      margin-bottom: 20px;
+    }
+
+    .success-message h2 {
+      color: var(--success);
+      margin-bottom: 15px;
+    }
+
+    .success-message p {
+      color: var(--gray);
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 20px;
+        margin: 20px auto;
+      }
+
+      .title {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .submit-btn {
+        width: 100%;
+      }
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      animation: fadeIn 0.6s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <section class="quote-section">
+    <h1 class="title">Request a Quote</h1>
+    <p class="subtitle">
+      Get a customized solution tailored to your specific needs. Fill out the form below and our team will get back to you within 24 hours with a detailed proposal.
+    </p>
+    <div class="container">
+      <form id="quoteForm" class="quote-form">
+        <div class="form-header">
+          <h2>Tell Us About Your Project</h2>
+          <p>Please provide as much detail as possible so we can give you an accurate estimate.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name" class="required">Your Name</label>
+            <input type="text" id="name" placeholder="Gomathi" required />
+            <div class="error-message">Please enter your name</div>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="required">Email</label>
+            <input type="email" id="email" placeholder="gomathi@example.com" required />
+            <div class="error-message">Please enter a valid email</div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="required">Phone Number</label>
+            <input type="tel" id="phone" placeholder="+1 (123) 456-7890" required />
+            <div class="error-message">Please enter a valid phone number</div>
+          </div>
+
+          <div class="form-group">
+            <label for="country" class="required">Country</label>
+            <select id="country" required>
+              <option value="" disabled selected>Select your country</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="CA">Canada</option>
+              <option value="AU">Australia</option>
+              <option value="IN">India</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="error-message">Please select your country</div>
+          </div>
+
+          <div class="form-group">
+            <label for="projectType" class="required">Project Type</label>
+            <select id="projectType" required>
+              <option value="" disabled selected>Select project type</option>
+              <option value="web">Website Development</option>
+              <option value="mobile">Mobile App Development</option>
+              <option value="design">UI/UX Design</option>
+              <option value="marketing">Digital Marketing</option>
+              <option value="consulting">Business Consulting</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="error-message">Please select a project type</div>
+          </div>
+
+          <div class="form-group">
+            <label for="budget" class="required">Estimated Budget</label>
+            <select id="budget" required>
+              <option value="" disabled selected>Select budget range</option>
+              <option value="1k-5k">$1,000 - $5,000</option>
+              <option value="5k-10k">$5,000 - $10,000</option>
+              <option value="10k-25k">$10,000 - $25,000</option>
+              <option value="25k-50k">$25,000 - $50,000</option>
+              <option value="50k+">$50,000+</option>
+              <option value="not-sure">Not sure yet</option>
+            </select>
+            <div class="error-message">Please select a budget range</div>
+          </div>
+
+          <div class="form-group">
+            <label for="timeline" class="required">Project Timeline</label>
+            <select id="timeline" required>
+              <option value="" disabled selected>Select timeline</option>
+              <option value="1-3">1-3 months</option>
+              <option value="3-6">3-6 months</option>
+              <option value="6-12">6-12 months</option>
+              <option value="12+">12+ months</option>
+              <option value="urgent">Urgent (ASAP)</option>
+            </select>
+            <div class="error-message">Please select a timeline</div>
+          </div>
+
+          <div class="form-group">
+            <label for="company">Company Name</label>
+            <input type="text" id="company" placeholder="Acme Inc." />
+          </div>
+
+          <div class="form-group full-width">
+            <label for="skills">Required Skills/Technologies</label>
+            <input type="text" id="skills" placeholder="e.g., React, Node.js, AWS, etc." />
+          </div>
+
+          <div class="form-group full-width">
+            <label for="message">Project Details</label>
+            <textarea id="message" placeholder="Describe your project in detail, including goals, requirements, and any specific features needed..."></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <div class="file-upload" id="fileDropArea">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <label for="fileUpload">Drag & drop files here or click to browse</label>
+              <input type="file" id="fileUpload" multiple />
+              <button type="button" class="upload-btn">Select Files</button>
+              <div class="file-info" id="fileInfo">No files selected</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-paper-plane"></i> Request Quote
+        </button>
+
+        <div class="form-footer">
+          By submitting this form, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </div>
+      </form>
+
+      <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i>
+        <h2>Thank You!</h2>
+        <p>Your quote request has been submitted successfully. Our team will review your project details and get back to you within 24 hours with a customized proposal.</p>
+        <button type="button" class="submit-btn" id="newRequestBtn">
+          <i class="fas fa-plus"></i> New Request
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('quoteForm');
+      const fileUpload = document.getElementById('fileUpload');
+      const fileDropArea = document.getElementById('fileDropArea');
+      const fileInfo = document.getElementById('fileInfo');
+      const successMessage = document.getElementById('successMessage');
+      const newRequestBtn = document.getElementById('newRequestBtn');
+
+      // File upload handling
+      fileUpload.addEventListener('change', function(e) {
+        handleFiles(e.target.files);
+      });
+
+      // Drag and drop functionality
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        fileDropArea.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        fileDropArea.addEventListener(eventName, highlight, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        fileDropArea.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight() {
+        fileDropArea.classList.add('dragover');
+      }
+
+      function unhighlight() {
+        fileDropArea.classList.remove('dragover');
+      }
+
+      fileDropArea.addEventListener('drop', function(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+      });
+
+      function handleFiles(files) {
+        if (files.length > 0) {
+          if (files.length === 1) {
+            fileInfo.textContent = `1 file selected: ${files[0].name}`;
+          } else {
+            fileInfo.textContent = `${files.length} files selected`;
+          }
+        } else {
+          fileInfo.textContent = 'No files selected';
+        }
+      }
+
+      // Form validation and submission
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Reset error states
+        document.querySelectorAll('.form-group').forEach(group => {
+          group.classList.remove('error');
+        });
+
+        // Validate required fields
+        let isValid = true;
+        const requiredFields = form.querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            const formGroup = field.closest('.form-group');
+            formGroup.classList.add('error');
+            isValid = false;
+          }
+        });
+
+        // Validate email format
+        const emailField = document.getElementById('email');
+        if (emailField.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
+          const formGroup = emailField.closest('.form-group');
+          formGroup.classList.add('error');
+          formGroup.querySelector('.error-message').textContent = 'Please enter a valid email address';
+          isValid = false;
+        }
+
+        if (isValid) {
+          // Simulate form submission
+          setTimeout(() => {
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+          }, 1000);
+        }
+      });
+
+      // New request button
+      newRequestBtn.addEventListener('click', function() {
+        form.reset();
+        fileInfo.textContent = 'No files selected';
+        successMessage.style.display = 'none';
+        form.style.display = 'flex';
+      });
+
+      // Click on upload area triggers file input
+      fileDropArea.addEventListener('click', function() {
+        fileUpload.click();
+      });
+    });
+  </script>
+</body>
+</html>
